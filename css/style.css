@@ -1,0 +1,279 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,900);
+
+/*-----------------------------
+  Reset
+-----------------------------*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, table, caption,
+tbody, tfoot, thead, tr, th, td, article, aside, 
+canvas, details, embed, figure, figcaption,
+footer, header, hgroup, menu, nav, output, 
+ruby, section, summary,time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, main, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/*-----------------------------
+  Fade-in
+-----------------------------*/
+
+@keyframes fade-in {
+    from {opacity: 0;}
+    to {opacity: 1;}}
+
+@-webkit-keyframes fade-in {
+    from {opacity: 0;}
+    to {opacity: 1;}}
+
+/*-----------------------------
+  Global
+-----------------------------*/
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html  {
+    -webkit-animation: fade-in 800ms ease-in;
+    background: #252E33;
+}
+
+body {
+    color: #808080;
+    font: 300 1.15rem 'Source Sans Pro', sans-serif;
+}
+
+.info {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+/*-----------------------------
+  Animation
+-----------------------------*/
+
+.note:before,
+button,
+.screen,
+.support {
+    transition: -webkit-transform 300ms cubic-bezier(.65, -0.65, .75, 2),
+                line-height 300ms cubic-bezier(.65, -0.65, .75, 2),
+                opacity 300ms cubic-bezier(.65, -0.65, .75, 2),
+                background 300ms ease-in;
+    -webkit-backface-visibility: hidden;
+}
+
+/*-----------------------------
+  Header
+-----------------------------*/
+
+.note:before {
+    color: white;
+    content: "Learn more on Github";
+    font-size: 1rem;
+    line-height: 0;
+    opacity: 0;
+    position: absolute;
+    right: 60px;
+    top: 10px;
+}
+
+.note:hover:before {
+    line-height: 1.4;
+    opacity: 1;
+}
+
+main {
+    margin: 0 auto;
+    max-width: 1350px;
+    width: 90%;
+}
+
+header {
+    margin-bottom: 12%;
+    margin-top: 12%;
+    position: relative;
+}
+
+
+h1 {
+    -webkit-font-smoothing: antialiased;
+    color: white;
+    font-size: 3.2rem;
+    font-weight: 900;
+    letter-spacing: .4rem;
+    line-height: .65;
+    margin-bottom: 1.1rem;
+    margin-left: -3px;
+    text-transform: uppercase;
+    cursor: default;
+}
+
+.small {
+    color: #F18260;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+button {
+    -webkit-font-smoothing: antialiased;
+    background: #F18260;
+    border-radius: 3px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1.1rem;
+    height: 4.4rem;
+    outline: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 15.5rem;
+}
+
+button:hover {
+    -webkit-transform: translateY(-3px);
+    background: #EF5A37;
+}
+
+button:active {
+    background: #D94517;
+    transition: none;
+}
+
+.install {
+    background: url(../images/install.svg) no-repeat;
+    width: 24px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 1rem;
+    vertical-align: middle;
+    margin-top: -5px;
+}
+
+/*-----------------------------
+  Video
+-----------------------------*/
+
+.screen {
+    background: #111719 url(../images/browser.svg) top left no-repeat;
+    border-radius: 3px;
+    display: block;
+    height: auto;
+    margin: 0 auto; 
+    max-width: 1350px;
+    overflow-x: hidden;
+    padding: 60px 0 1.4rem 0;
+    position: relative;
+}
+
+.screen:hover{
+    -webkit-transform: translateY(-20px);
+}
+
+.screen img, .screen video {
+    display: block;
+}
+
+.screen video {
+    width: 100%;
+}
+
+.store-link {
+    display: block;
+    position: absolute;
+    height: 60px;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+/*-----------------------------
+  Footer
+-----------------------------*/
+
+.support {
+    display: block;
+    height: 20rem;
+    line-height: 20rem;
+    text-decoration: none;
+    text-align: center;
+    color: #F18260;
+}
+
+.support:hover{
+    -webkit-transform: translateY(-10px);
+}
+
+.support:before {
+    content: url(../images/email.svg);
+    margin-right: 1rem;
+    vertical-align: middle;
+}
+
+/*-----------------------------
+  Extras
+-----------------------------*/
+
+::selection {
+    background: transparent;
+    color: #F18260;}
+
+/*-----------------------------
+  Media Queries
+-----------------------------*/
+
+@media only screen and (max-width: 320px) {
+    body { font-weight: 400;}
+    button { width: 100%; }
+}
+
+@media only screen and (max-width: 1100px) {
+    header { text-align: center; }
+    h2 { margin-bottom: 10%; }
+    button { position: static; }
+}
