@@ -10,7 +10,7 @@
 - Add custom tags
 - Generate screenshots of your bookmarks (Provided by [Snapito](http://snapito.com))
 - Search and sort in a much smarter and faster way
-- [How To (Intsall, Launch, Search, etc.)](docs/how-to-use-dewey.md) →
+- [How To (Install, Launch, Search, etc.)](docs/how-to-use-dewey.md) →
 
 ![screenshot](webstore/screenshot-1.jpg)
 
