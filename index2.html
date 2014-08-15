@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="images/favicon.png" rel="shortcut icon">
+
+    <title>Dewey, better bookmarks for Chrome</title>
+
+    <link rel="stylesheet" href="css/main.css">
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet" type="text/css">
+    <script type="text/javascript" async="" src="https://ssl.google-analytics.com/ga.js"></script><script data-main="js/startup" src="bower_components/requirejs/require.js"></script>
+
+    <script id="template/modal/window.html" type="text/ng-template">
+      <div tabindex="-1" class="modal fade {{ windowClass }}" ng-class="{in: animate}" ng-click="close($event)">
+          <div class="modal-dialog" ng-transclude></div>
+      </div>
+    </script>
+
+  <body> <!-- add '.modal-open' -->
+
+    <main id="mainContent" class="ng-scope">
+
+      <header class="nav-wrap"> <!-- add '.scale-blur' on modal-open -->
+        <nav class="search-wrap">
+          <form class="search ng-pristine ng-valid" role="search">
+            <div class="form-group search-group">
+              <input autofocus="true" type="search" class="form-control" placeholder="Dewey. Better bookmarks for Google Chrome.">
+            </div>
+          </form>
+        </nav>
+        <a class="settings-toggle"></a>
+      </header>
+
+
+      <div class="settings"><!-- settings modal -->
+        <a class="close"></a>
+        <div class="settings-wrap">
+          <ul class="col-1">
+            <li><a class="docs" href="https://github.com/deweyapp/dewey-website/blob/master/README.md" target="_blank">How To</a></li>
+            <li><a class="feedback" href="https://github.com/deweyapp/dewey/issues" target="_blank">Feedback</a></li>
+            <li><a class="review" href="https://chrome.google.com/webstore/detail/dewey-bookmarks/aahpfefkmihhdabllidnlipghcjgpkdm/reviews" target="_blank">Review</a></li>
+            <li><a class="donate" href="https://github.com/deweyapp/dewey-website/blob/master/README.md#donate" target="_blank">Donate</a></li>
+            <li><a class="email" href="mailto:support@deweyapp.io?Subject=Hello, Dewey.">Email Us</a></li>
+            <li><a class="website" href="http://deweyapp.io" target="_blank">Website</a></li>
+          </ul> <!-- .col-1 -->
+          <ul class="col-2">
+            <li>
+              <form>
+                <div>Settings:</div>
+
+                <div class="checkbox" title="Don’t show thumbnails for bookmarks" ng-click="setShowThumbnails()">
+                  <input id="hide-thumbs" class="css-checkbox" type="checkbox" ng-checked="showThumbnails" checked="checked">
+                  <label for="hide-thumbs" class="css-label">Show Screenshots</label>
+                </div>
+
+                <div class="checkbox" title="Don’t show top-level folders as tags (Mobile Bookmarks, Other Bookmarks, ...)" ng-click="setHideTopLevelFolders()">
+                  <input id="hide-folders" class="css-checkbox" type="checkbox" ng-checked="hideTopLevelFolders" checked="checked">
+                  <label for="hide-folders" class="css-label">Hide Top-level Folders as Tags</label>
+                </div>
+                <div class="credits"><p>Screenshots by <a class="important" href="http://snapito.io" target="_blank">Snapito</a></p></div>
+              </form>
+            </li>
+          </ul> <!-- .col-2 -->
+        </div> <!-- .settings-wrap -->
+
+        <div class="credits makers">
+          Built by:
+          <a class="important" href="https://twitter.com/outcoldman" target="_blank">Denis</a>,
+          <a class="important" href="https://twitter.com/jmwlsn" target="_blank">Jamie</a>
+          and <a class="important" href="https://twitter.com/artemgrygor" target="_blank">Artem</a>
+        </div>
+
+      </div> <!-- settings modal -->
+
+      <div class="modal"> <!-- Edit Modal / add '.in' -->
+          <div class="modal-dialog">
+            <div class="modal-body">
+              <form>
+                <div class="edit-wrap">
+                  <textarea id="textBoxTitle" class="title-input" placeholder="Bookmark Title">Find and install Dewey on the Chrome Web Store!</textarea>
+                  <a class="launch" href="https://chrome.google.com/webstore/detail/dewey-bookmarks/aahpfefkmihhdabllidnlipghcjgpkdm" target="_blank"></a>
+                  <input type="text" class="url-input" placeholder="https://chrome.google.com/webstore/detail/dewey-bookmarks/aahpfefkmihhdabllidnlipghcjgpkdm">
+                </div>
+
+                <div class="form-group tags">
+                   <ul class="list-inline">
+                     <li><span class="tag">Bookmarks</span><li>
+                    <li class="custom-tags">
+                      <li><span class="tag custom-tag">Custom Tags</span><li>
+                      <li><span class="tag custom-tag">Screenshots</span><li>
+                      <li><span class="tag custom-tag">Smart Search</span><li>
+                      <bootstrap-tagsinput type="text" id="textBoxCustomTags" class="custom-tag-input ng-isolate-scope ng-pristine ng-valid" placeholder="+ Add Tag" ng-model="bookmarkModel.customTags" tagclass="tag custom-tag">
+                        <select multiple="" placeholder="+  Add Tag" style="display: none;"></select>
+                        <div class="bootstrap-tagsinput"><input size="10" type="text" placeholder="+  Add Tag"></div>
+                      </bootstrap-tagsinput>
+                    </li>
+                  </ul>
+                </div>
+
+              <div class="modal-footer">
+                <a class="delete" ng-click="delete()" tabindex="40">Delete</a>
+                <a class="cancel" ng-click="cancel()" tabindex="50">Cancel</a>
+                <a class="save" ng-click="save()" tabindex="30">Install</a>
+              </div>
+
+            </form>
+          </div> <!-- modal body -->
+        </div> <!-- modal dialog-->
+      </div> <!-- modal -->
+
+      <div class="grid"> <!-- add '.scale-blur' on modal-open -->
+
+        <div class="tags-wrap"> <!-- add '.open' on click -->
+          <a class="tags-toggle"></a>
+          <ui class="tags-list">
+            <!-- ngRepeat: tag in tags | orderBy: 'tagText' -->
+            <li><a target="_blank">Dewey</a></li>
+            <li><a target="_blank">Lets You</a></li>
+            <li><a target="_blank">Create</a></li>
+            <li><a target="_blank">Custom</a></li>
+            <li><a target="_blank">Tags</a></li>
+            <li><a target="_blank">For all</a></li>
+            <li><a target="_blank">Your</a></li>
+            <li><a target="_blank">Chrome</a></li>
+            <li><a target="_blank">Bookmarks</a></li>
+          </ui>
+        </div>
+
+        <ul class="sort">
+          <li>
+            <p>Sort:</p>
+            <a class="sort-active">Date</a>
+            <a class=" ">Title</a>
+            <a class=" ">URL</a>
+            <button class="install-btn" type="button" onclick="chrome.webstore.install()" id="install-button">Add to Chrome</button>
+          </li>
+        </ul>
+
+        <ul class="list-bookmarks">
+
+          <li>
+            <div class="card card-primary">
+              <div class="edit-toggle"></div>
+              <a class="bookmark-link" href="http://cssguidelin.es/"></a>
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fcssguidelin.es%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(172, 196, 220);" title="http://cssguidelin.es/"></div>
+              <div class="details">
+                <img class="favicon" src="http://g.etfv.co/http://cssguidelin.es/?defaulticon=lightpng" alt="http://cssguidelin.es/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">CSS Guidelines - High-level advice and guidelines for writing sane, manageable, scalable CSS</h2>
+                <div class="tag-links">
+                    <a>CSS</a>
+                </div><!-- tags -->
+              </div><!-- details -->
+            </div><!-- card -->
+          </li>
+
+          <li>
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://yeo-lab.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fyeo-lab.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(180, 188, 202);" title="http://yeo-lab.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://yeo-lab.com/?defaulticon=lightpng" alt="http://yeo-lab.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Yeo+Lab | Like peanut butter and jelly, but less sticky.</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="https://pickcrew.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=https%3A%2F%2Fpickcrew.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(168, 216, 244);" title="https://pickcrew.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/https://pickcrew.com/?defaulticon=lightpng" alt="https://pickcrew.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Crew | An Invite-Only Marketplace Connecting Projects With Talent</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Business</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Freelance</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://www.gomoodboard.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fwww.gomoodboard.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(110, 180, 222);" title="http://www.gomoodboard.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://www.gomoodboard.com/?defaulticon=lightpng" alt="http://www.gomoodboard.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Moodboard | Quickly build a beautiful moodboard and share the result</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Design</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Inspiration</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="https://medium.com/the-year-of-the-looking-glass/why-i-design-at-facebook-bc978af3b0c1"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=https%3A%2F%2Fmedium.com%2Fthe-year-of-the-looking-glass%2Fwhy-i-design-at-facebook-bc978af3b0c1&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(213, 213, 213);" title="https://medium.com/the-year-of-the-looking-glass/why-i-design-at-facebook-bc978af3b0c1"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/https://medium.com/the-year-of-the-looking-glass/why-i-design-at-facebook-bc978af3b0c1?defaulticon=lightpng" alt="https://medium.com/the-year-of-the-looking-glass/why-i-design-at-facebook-bc978af3b0c1" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Why I design at Facebook — The Year of the Looking Glass — Medium</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Business</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Freelance</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://premailer.dialect.ca/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fpremailer.dialect.ca%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(213, 213, 213);" title="http://premailer.dialect.ca/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://premailer.dialect.ca/?defaulticon=lightpng" alt="http://premailer.dialect.ca/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Premailer: pre-flight for HTML email</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Email</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://www.leuchtturm1917.com/en/content/startseite"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fwww.leuchtturm1917.com%2Fen%2Fcontent%2Fstartseite&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(68, 68, 84);" title="http://www.leuchtturm1917.com/en/content/startseite"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://www.leuchtturm1917.com/en/content/startseite?defaulticon=lightpng" alt="http://www.leuchtturm1917.com/en/content/startseite" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Leuchtturm1917 - Notebooks</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Hardware</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://jamiewilson.io/predawn/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fjamiewilson.io%2Fpredawn%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(148, 148, 148);" title="http://jamiewilson.io/predawn/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://jamiewilson.io/predawn/?defaulticon=lightpng" alt="http://jamiewilson.io/predawn/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Predawn - Interface and Syntax Theme for Sublime and Atom</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">My Sites</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://www.shortwhale.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fwww.shortwhale.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(20, 84, 76);" title="http://www.shortwhale.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://www.shortwhale.com/?defaulticon=lightpng" alt="http://www.shortwhale.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Shortwhale | Stop drowning in email</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Email</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://www.mockuuups.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fwww.mockuuups.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(34, 130, 207);" title="http://www.mockuuups.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://www.mockuuups.com/?defaulticon=lightpng" alt="http://www.mockuuups.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Mockuuups - 12 adjustable templates with iPhone 5s</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Design</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Mockups/Prototypes</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="https://jamiewilson.harvestapp.com/time"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=https%3A%2F%2Fjamiewilson.harvestapp.com%2Ftime&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(252, 148, 49);" title="https://jamiewilson.harvestapp.com/time"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/https://jamiewilson.harvestapp.com/time?defaulticon=lightpng" alt="https://jamiewilson.harvestapp.com/time" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Harvest</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://covve.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fcovve.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(60, 140, 204);" title="http://covve.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://covve.com/?defaulticon=lightpng" alt="http://covve.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Covve - Your contacts visualized</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Business</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://www.rapidtables.com/web/html/mailto.htm#generator"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fwww.rapidtables.com%2Fweb%2Fhtml%2Fmailto.htm%23generator&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(252, 196, 76);" title="http://www.rapidtables.com/web/html/mailto.htm#generator"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://www.rapidtables.com/web/html/mailto.htm#generator?defaulticon=lightpng" alt="http://www.rapidtables.com/web/html/mailto.htm#generator" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Mailto Link Generator</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Email</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://mailto.ninja/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fmailto.ninja%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(52, 92, 164);" title="http://mailto.ninja/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://mailto.ninja/?defaulticon=lightpng" alt="http://mailto.ninja/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Mailto Ninja</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Forms</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding badge-custom">Email</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://vodkabears.github.io/vide/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fvodkabears.github.io%2Fvide%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(84, 84, 84);" title="http://vodkabears.github.io/vide/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://vodkabears.github.io/vide/?defaulticon=lightpng" alt="http://vodkabears.github.io/vide/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Vide - easy as hell jQuery plugin for video backgrounds</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Javascript</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://shrthnd.volume7.io/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fshrthnd.volume7.io%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(213, 213, 213);" title="http://shrthnd.volume7.io/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://shrthnd.volume7.io/?defaulticon=lightpng" alt="http://shrthnd.volume7.io/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">CSS Shorthand Generator</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">CSS</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="https://legalsifter.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=https%3A%2F%2Flegalsifter.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(204, 204, 204);" title="https://legalsifter.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/https://legalsifter.com/?defaulticon=lightpng" alt="https://legalsifter.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">LegalSifter - Machine Learning for Legal Documents</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Business</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Legal</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="unsafe:chrome-extension://omnfjljnhdopjfhdiijpheakkchplmaa/app.html#/main"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=chrome-extension%3A%2F%2Fomnfjljnhdopjfhdiijpheakkchplmaa%2Fapp.html%23%2Fmain&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(76, 129, 177);" title="chrome-extension://omnfjljnhdopjfhdiijpheakkchplmaa/app.html#/main"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/chrome-extension://omnfjljnhdopjfhdiijpheakkchplmaa/app.html#/main?defaulticon=lightpng" alt="chrome-extension://omnfjljnhdopjfhdiijpheakkchplmaa/app.html#/main" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Dewey</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="https://calendar.sunrise.am/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=https%3A%2F%2Fcalendar.sunrise.am%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(252, 107, 72);" title="https://calendar.sunrise.am/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/https://calendar.sunrise.am/?defaulticon=lightpng" alt="https://calendar.sunrise.am/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Sunrise</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding badge-custom">Productivity</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="https://www.statuspage.io/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=https%3A%2F%2Fwww.statuspage.io%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(132, 188, 68);" title="https://www.statuspage.io/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/https://www.statuspage.io/?defaulticon=lightpng" alt="https://www.statuspage.io/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">StatusPage.io - Hosted Status Pages for Your Company</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Apps</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://properapp.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fproperapp.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(213, 213, 213);" title="http://properapp.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://properapp.com/?defaulticon=lightpng" alt="http://properapp.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Easy to Understand Contracts for Freelancers</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Business</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Freelance</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://www.creativebloq.com/javascript/create-your-own-real-time-forum-meteor-11410408"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fwww.creativebloq.com%2Fjavascript%2Fcreate-your-own-real-time-forum-meteor-11410408&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(252, 95, 26);" title="http://www.creativebloq.com/javascript/create-your-own-real-time-forum-meteor-11410408"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://www.creativebloq.com/javascript/create-your-own-real-time-forum-meteor-11410408?defaulticon=lightpng" alt="http://www.creativebloq.com/javascript/create-your-own-real-time-forum-meteor-11410408" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Create your own real-time forum with Meteor</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Meteor</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://kalasoo.github.io/NumberProgressBar/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fkalasoo.github.io%2FNumberProgressBar%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(213, 213, 213);" title="http://kalasoo.github.io/NumberProgressBar/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://kalasoo.github.io/NumberProgressBar/?defaulticon=lightpng" alt="http://kalasoo.github.io/NumberProgressBar/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">NumberProgressBar</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Javascript</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://pullpu.sh/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fpullpu.sh%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(196, 100, 100);" title="http://pullpu.sh/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://pullpu.sh/?defaulticon=lightpng" alt="http://pullpu.sh/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">pullpush | jQuery and JavaScript plugins and libraries</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Javascript</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://brianreavis.github.io/selectize.js/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fbrianreavis.github.io%2Fselectize.js%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(213, 213, 213);" title="http://brianreavis.github.io/selectize.js/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://brianreavis.github.io/selectize.js/?defaulticon=lightpng" alt="http://brianreavis.github.io/selectize.js/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Selectize.js</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Javascript</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="https://github.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=https%3A%2F%2Fgithub.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(20, 20, 20);" title="https://github.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/https://github.com/?defaulticon=lightpng" alt="https://github.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">GitHub</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://whatsmybrowsersize.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fwhatsmybrowsersize.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(213, 213, 213);" title="http://whatsmybrowsersize.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://whatsmybrowsersize.com/?defaulticon=lightpng" alt="http://whatsmybrowsersize.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">What’s My Browser Size?</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://park.io/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fpark.io%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(49, 49, 49);" title="http://park.io/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://park.io/?defaulticon=lightpng" alt="http://park.io/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Park.io - .io domain name backorders and auctions</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Domains</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://getcockpit.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fgetcockpit.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(213, 213, 213);" title="http://getcockpit.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://getcockpit.com/?defaulticon=lightpng" alt="http://getcockpit.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Cockpit</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">CMS</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://glyphsearch.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fglyphsearch.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(236, 236, 236);" title="http://glyphsearch.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://glyphsearch.com/?defaulticon=lightpng" alt="http://glyphsearch.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">GlyphSearch: Search for icons from Font Awesome, Glyphicons, IcoMoon, Ionicons, and Octicons</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Design</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Icons</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://www.chartjs.org/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fwww.chartjs.org%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(213, 213, 213);" title="http://www.chartjs.org/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://www.chartjs.org/?defaulticon=lightpng" alt="http://www.chartjs.org/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Chart.js | Open source HTML5 Charts for your website</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Design</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="https://jarv.co/?utm_source=SitePoint&amp;utm_medium=email&amp;utm_campaign=Versioning"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=https%3A%2F%2Fjarv.co%2F%3Futm_source%3DSitePoint%26utm_medium%3Demail%26utm_campaign%3DVersioning&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(76, 129, 177);" title="https://jarv.co/?utm_source=SitePoint&amp;utm_medium=email&amp;utm_campaign=Versioning"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/https://jarv.co/?utm_source=SitePoint&amp;utm_medium=email&amp;utm_campaign=Versioning?defaulticon=lightpng" alt="https://jarv.co/?utm_source=SitePoint&amp;utm_medium=email&amp;utm_campaign=Versioning" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Jarvis - Your SMS Personal Assistant</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Productivity</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://sketchtoolbox.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fsketchtoolbox.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(213, 213, 213);" title="http://sketchtoolbox.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://sketchtoolbox.com/?defaulticon=lightpng" alt="http://sketchtoolbox.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Sketch Toolbox - A super simple plugin manager for Sketch</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Design</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://hoistapps.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fhoistapps.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(20, 140, 228);" title="http://hoistapps.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://hoistapps.com/?defaulticon=lightpng" alt="http://hoistapps.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Hoist – Build Beautiful Web Apps</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Apps</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://alistapart.com/blog/post/ten-css-one-liners-to-replace-native-apps/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Falistapart.com%2Fblog%2Fpost%2Ften-css-one-liners-to-replace-native-apps%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(213, 213, 213);" title="http://alistapart.com/blog/post/ten-css-one-liners-to-replace-native-apps/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://alistapart.com/blog/post/ten-css-one-liners-to-replace-native-apps/?defaulticon=lightpng" alt="http://alistapart.com/blog/post/ten-css-one-liners-to-replace-native-apps/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Ten CSS One-Liners to Replace Native Apps</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Apps</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Photo</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://gifferapp.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fgifferapp.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(60, 60, 60);" title="http://gifferapp.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://gifferapp.com/?defaulticon=lightpng" alt="http://gifferapp.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">The animated GIF iOS app for your iPhone iPod touch or iPad - Giffer</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Apps</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Photo</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://www.dollarphotoclub.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Fwww.dollarphotoclub.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(180, 156, 140);" title="http://www.dollarphotoclub.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://www.dollarphotoclub.com/?defaulticon=lightpng" alt="http://www.dollarphotoclub.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Dollar Photo Club - hi-quality royalty-free photos and vectors</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Apps</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Photo</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="https://www.inkbrush.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=https%3A%2F%2Fwww.inkbrush.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(188, 220, 228);" title="https://www.inkbrush.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/https://www.inkbrush.com/?defaulticon=lightpng" alt="https://www.inkbrush.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Inkbrush - A web application to quickly build bulletproof emails.</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Email</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="http://rogerdudler.github.io/git-guide/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=http%3A%2F%2Frogerdudler.github.io%2Fgit-guide%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(213, 213, 213);" title="http://rogerdudler.github.io/git-guide/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/http://rogerdudler.github.io/git-guide/?defaulticon=lightpng" alt="http://rogerdudler.github.io/git-guide/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">git - the simple guide - no deep shit!</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Development</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Git</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><li ng-repeat="bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed)" class="ng-scope">
+
+            <div class="card" ng-class="{'card-primary': ($index == selectedIndex), 'card-small': !showThumbnails}" ng-click="selectBookmark($index)">
+
+              <div class="edit-toggle" ng-click="editBookmark(bookmark)"></div>
+              <a class="bookmark-link" href="https://smacss.com/"></a>
+
+              <div class="thumbnail" style="background: url(http://api.snapito.io/v2/webshot/spu-611151-o3bp-du0ixqlrpknnlggm?url=https%3A%2F%2Fsmacss.com%2F&amp;size=250x188&amp;screen=1000x752&amp;quality=low&amp;type=jpg), rgb(194, 199, 205);" title="https://smacss.com/"></div>
+
+              <div class="details">
+
+                <img class="favicon" src="http://g.etfv.co/https://smacss.com/?defaulticon=lightpng" alt="https://smacss.com/" my-update-background="" crossorigin="anonymous">
+                <h2 class="ng-binding">Home - Scalable and Modular Architecture for CSS</h2>
+
+                <div class="tag-links">
+                  <!-- ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Design</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag --><span ng-repeat="tag in bookmark.tag" class="ng-scope">
+                    <a ng-class="{'badge-custom': tag.custom}" ng-click="selectTag(tag.text)" class="ng-binding">Style Guides</a>
+                  </span><!-- end ngRepeat: tag in bookmark.tag -->
+                </div><!-- tags -->
+
+              </div><!-- details -->
+            </div><!-- card -->
+          </li><!-- end ngRepeat: bookmark in (filteredBookmarks | orderBy:currentOrder.value | limitTo:totalDisplayed) --><!-- bookmarks in bookmarks -->
+        </ul><!-- list-bookmarks -->
+      </div><!-- grid -->
+
+      <button class="footer install-btn" type="button" onclick="chrome.webstore.install()" id="install-button">Add to Chrome</button>
+
+    </main>
+  </body>
+</html>
