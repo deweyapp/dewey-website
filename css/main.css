@@ -1145,6 +1145,9 @@ cursor: default;  }
 
 @media only screen and (max-width: 29rem) {
 
+  body {   overflow-y: scroll; /* has to be scroll, not auto */
+  -webkit-overflow-scrolling: touch;}
+
   .grid { width: 12.5rem; }
 
   .settings-wrap { margin: 20px; width: auto; }
