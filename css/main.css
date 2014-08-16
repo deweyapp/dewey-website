@@ -467,6 +467,14 @@ cursor: default;  }
 }
 
 /*====================================================
+    Tweet Button
+====================================================*/
+
+.twitter-share-button {
+  -webkit-transform: translateY(5px);
+}
+
+/*====================================================
     Tags Dropdown
 ====================================================*/
 
@@ -1151,6 +1159,6 @@ cursor: default;  }
 
   .sort a:last-child { margin-right: 0; }
 
-  .tags-wrap { margin-top: 0; }
+  .twitter-share-button { -webkit-transform: translateX(20px) translateY(5px); }
 
   .install-btn { width: 100%; margin-top: 2rem; }}
