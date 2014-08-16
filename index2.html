@@ -16,7 +16,7 @@
 
     <script src='http://code.jquery.com/jquery-2.1.1.min.js'></script>
     <script src='js/scripts.js'></script>
-    
+
   </head>
 
   <body> <!-- toggle '.modal-open' after clicking '.settings-toggle' and '.edit-toggle'  -->
@@ -52,18 +52,18 @@
                 <div>What do you get with Dewey?</div>
 
                 <div class="checkbox" title="Show screenshots for bookmarks">
-                  <input id="hide-thumbs" class="css-checkbox" type="checkbox" ng-checked="showThumbnails" checked="checked">
-                  <label for="hide-thumbs" class="css-label">Screenshots</label>
+                  <input id="screenshots" class="css-checkbox" type="checkbox" ng-checked="showThumbnails" checked="checked">
+                  <label for="screenshots" class="css-label">Screenshots</label>
                 </div>
 
                 <div class="checkbox" title="Add custom tags to your bookmarks" >
-                  <input id="hide-folders" class="css-checkbox" type="checkbox" ng-checked="hideTopLevelFolders" checked="checked">
-                  <label for="hide-folders" class="css-label">Custom Tagging</label>
+                  <input id="tagging" class="css-checkbox" type="checkbox" ng-checked="hideTopLevelFolders" checked="checked">
+                  <label for="tagging" class="css-label">Custom Tagging</label>
                 </div>
 
                 <div class="checkbox" title="Super fast search" >
-                  <input id="hide-folders" class="css-checkbox" type="checkbox" ng-checked="hideTopLevelFolders" checked="checked">
-                  <label for="hide-folders" class="css-label">Smarter Search</label>
+                  <input id="search" class="css-checkbox" type="checkbox" ng-checked="hideTopLevelFolders" checked="checked">
+                  <label for="search" class="css-label">Smarter Search</label>
                 </div>
 
                 <div class="credits"><button class="install-btn push-down" type="button" onclick="chrome.webstore.install()" id="install-button">Add to Chrome</button></div>
