@@ -6,7 +6,7 @@ $( document ).ready(function() {
         $( ".settings" ).toggleClass( "open" );
     });
 
-    $( ".edit-toggle, .delete, .cancel" ).click(function() {
+    $( ".edit-toggle, .delete, .cancel, .tag-links a" ).click(function() {
         $( "body" ).toggleClass( "modal-open" );
         $( ".grid, .nav-wrap" ).toggleClass( "scale-blur" );
         $( ".modal" ).toggleClass( "in" );

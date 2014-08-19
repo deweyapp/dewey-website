@@ -1144,10 +1144,12 @@ cursor: default;  }
   .grid { width: 29rem; }}
 
 @media only screen and (max-width: 29rem) {
-  
+
   .grid { width: 12.5rem; }
 
-  .settings-wrap { margin: 20px; width: auto; }
+  .settings-toggle { display: none; }
+
+  .search-group input[type="search"] { width: 100%; font-size: 1rem; }
 
   .list-bookmarks li { margin: 1.25rem 0 0 0; }
 
