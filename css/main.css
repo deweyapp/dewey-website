@@ -262,16 +262,13 @@ input[type="search"]::-webkit-search-cancel-button {
   margin: 25vh auto;
   min-height: 16rem;
   position: relative;
-  width: 36rem; }
+  width: 29rem; }
 
 .col-1,
 .col-2 {
   display: inline-block;
   width: 14rem;
   vertical-align: top; }
-
-.col-2 {
-  width: 21rem; }
 
 .settings ul {
   list-style: none; }
