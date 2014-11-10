@@ -8,7 +8,7 @@
 **With Dewey you can:**
 
 - Add custom tags
-- Generate screenshots of your bookmarks (Provided by [Snapito](http://snapito.com))
+- Generate screenshots of your bookmarks (Provided by [Page2Images Website Screenshot](http://www.page2images.com/))
 - Search and sort in a much smarter and faster way
 - [How To (Install, Launch, Search, etc.)](docs/how-to-use-dewey.md) →
 
@@ -97,9 +97,8 @@ To build this application we used following Open Source libraries and resources:
 - [bootstrap-tagsinput](http://timschlechter.github.io/bootstrap-tagsinput/examples/bootstrap3/) – With small modification of `bootstrap-tagsinput-angular`  
 - [getFavicon](http://g.etfv.co/)
 
-##Special thanks to [Snapito](http://snapito.com)
-We'd like to thank **[Snapito](http://snapito.com)** for their generosity in helping us generate screenshots. If you are looking for a screenshot/thumbnail service to generate screenshots from URLs, definitely give [Snapito](http://snapito.com) a try. Their API is super easy and they are super friendly. 
-
+##Special thanks to [Page2Images](http://www.page2images.com/)
+We'd like to thank **[Page2Images](http://www.page2images.com/)** for their generosity in helping us generate screenshots. If you are looking for an API service to generate website screenshot, definitely give Page2Images a try. The API is easy to use, they've got great customer support, and their service is super fast.
 
 ## License
 Apache License, Version 2.0
