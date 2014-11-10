@@ -399,7 +399,7 @@ label.css-label {
   display: inline-block;
   list-style: none;
   margin-right: 1.5rem;
-cursor: default;  }
+  cursor: default;  }
 
 .sort a {
   cursor: default;
@@ -454,13 +454,25 @@ cursor: default;  }
 .footer.install-btn {
     font-size: 1rem;
     height: 60px;
-    margin: 15vh auto 20vh;
+    margin: 15vh auto 10vh;
     width: 200px;
     display: block;
 }
 
 .footer.install-btn:hover {
   -webkit-transform: translateY(-0.3rem);
+}
+
+.blurb {
+  color: rgba(36, 45, 50, 0.5);
+    max-width: 50rem;
+    margin: 5vh auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+.blurb a {
+   color: #F18260;
 }
 
 /*====================================================
