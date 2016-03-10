@@ -1,5 +1,3 @@
-[![screenshot](webstore/promo-1400x560.jpg)](https://chrome.google.com/webstore/detail/dewey-bookmarks/aahpfefkmihhdabllidnlipghcjgpkdm)
-
 # Dewey. Better Chrome Bookmarks.
 
 ### Dewey is a [Chrome app](https://chrome.google.com/webstore/detail/dewey-bookmarks/aahpfefkmihhdabllidnlipghcjgpkdm) for tagging, searching and sorting your Chrome bookmarks.
@@ -22,6 +20,8 @@ Help us to switch to more [powerful server](https://www.digitalocean.com/pricing
 ### Bitcoin: 1gyn9f44ha99srgllwggk5mzysax3bpesw
 
 [![bitcoin:1gyn9f44ha99srgllwggk5mzysax3bpesw](http://i.imgur.com/V9xtJAt.png)](bitcoin:1gyn9f44ha99srgllwggk5mzysax3bpesw)
+
+[![screenshot](webstore/promo-1400x560.jpg)](https://chrome.google.com/webstore/detail/dewey-bookmarks/aahpfefkmihhdabllidnlipghcjgpkdm)
 
 ## Creators
 
