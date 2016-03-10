@@ -2,15 +2,41 @@
 
 # Dewey. Better Chrome Bookmarks.
 
-###Dewey is a [Chrome app](https://chrome.google.com/webstore/detail/dewey-bookmarks/aahpfefkmihhdabllidnlipghcjgpkdm) for tagging, searching and sorting your Chrome bookmarks.  
-  
-  
+### Dewey is a [Chrome app](https://chrome.google.com/webstore/detail/dewey-bookmarks/aahpfefkmihhdabllidnlipghcjgpkdm) for tagging, searching and sorting your Chrome bookmarks.
+
 **With Dewey you can:**
 
 - Add custom tags
 - Generate screenshots of your bookmarks (Provided by [Page2Images Website Screenshot](http://www.page2images.com/))
 - Search and sort in a much smarter and faster way
 - [How To (Install, Launch, Search, etc.)](docs/how-to-use-dewey.md) →
+
+## Donate
+
+Help us to switch to more [powerful server](https://www.digitalocean.com/pricing/) (we are using it to [generate screenshots](https://github.com/deweyapp/dewey-server)).
+
+### PayPal
+
+[![PayPal](https://raw.githubusercontent.com/deweyapp/dewey-website/master/docs/images/donate.png "PayPal Donation")](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=outcoldman%40gmail%2ecom&lc=US&item_name=Donation%20for%20supporting%20bookmarks%20application&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted)
+
+### Bitcoin: 1gyn9f44ha99srgllwggk5mzysax3bpesw
+
+[![bitcoin:1gyn9f44ha99srgllwggk5mzysax3bpesw](http://i.imgur.com/V9xtJAt.png)](bitcoin:1gyn9f44ha99srgllwggk5mzysax3bpesw)
+
+## Creators
+
+###Denis Gladkikh - Development
+
+- [https://www.outcoldman.com](https://www.outcoldman.com)
+- [https://twitter.com/outcoldman](https://twitter.com/outcoldman)
+- [https://github.com/outcoldman](https://github.com/outcoldman)
+
+###Jamie Wilson - Design
+
+- [Portfolio - jamiewilson.io](http://jamiewilson.io)
+- [Twitter - @jmwlsn](https://twitter.com/jmwsln)
+- [github.com/jamiewilson](https://github.com/jamiewilson)
+
 
 ![screenshot](webstore/screenshot-1.jpg)
 
@@ -53,25 +79,6 @@ It would be helpful if we could occasionally email you questions about Dewey. If
 
 [![subscribe](docs/images/subscribe.png)](http://eepurl.com/OeXtX)
 
-## Donate
-We made Dewey in our spare time because it's fun to build things. We hope you find it useful.
-
-If you like Dewey and want to support future development—or just say thank you, **please consider making a donation of $5, $10 or $20** (or whatever you can afford) to help us continue to improve it.
-
-[![PayPal](docs/images/donate.png "PayPal Donation")](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=outcoldman%40gmail%2ecom&lc=US&item_name=Donation%20for%20supporting%20bookmarks%20application&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted)
-
-## Creators
-###Denis Gladkikh - Development
-
-- [http://outcoldman.com](http://outcoldman.com)
-- [https://twitter.com/outcoldman](https://twitter.com/outcoldman)
-- [https://github.com/outcoldman](https://github.com/outcoldman)
-
-###Jamie Wilson - Design
-
-- [Portfolio - jamiewilson.io](http://jamiewilson.io)
-- [Twitter - @jmwlsn](https://twitter.com/jmwsln)
-- [github.com/jamiewilson](https://github.com/jamiewilson)
 
 ##Icons
 All icons used in this application are released to the public with No Copyright (CC0 1.0 Universal (CC0 1.0) Public Domain Dedication). 
@@ -93,14 +100,11 @@ To build this application we used following Open Source libraries and resources:
 - [bootstrap-tagsinput](http://timschlechter.github.io/bootstrap-tagsinput/examples/bootstrap3/) – With small modification of `bootstrap-tagsinput-angular`  
 - [getFavicon](http://g.etfv.co/)
 
-##Special thanks to [Page2Images](http://www.page2images.com/)
-We'd like to thank **[Page2Images](http://www.page2images.com/)** for their generosity in helping us generate screenshots. If you are looking for an API service to generate website screenshot, definitely give Page2Images a try. The API is easy to use, they've got great customer support, and their service is super fast.
-
 ## License
 Apache License, Version 2.0
 
 ***
-  
+
 ### Changelog
 - 2.0.2 (February 12 2014) - Update CSS styles to Dewey thumbnails.
 - 2.0 (February 11 2014) - Redesign, rebranding. First Dewey version.
