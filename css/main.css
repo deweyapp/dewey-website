@@ -427,7 +427,7 @@ label.css-label {
   font-weight: 400;
   font-size: .875rem;
   height: 40px;
-  margin-right: 1rem;
+  margin: 0 1rem;
   outline: none;
   width: 140px;
   transition: -webkit-transform 250ms cubic-bezier(0.5, -0.75, 0.25, 1.5),
