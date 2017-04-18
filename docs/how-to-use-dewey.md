@@ -1,4 +1,4 @@
-#How to use Dewey
+# How to use Dewey
 - [Installing](#installing)
 - [Launching](#launching)
 - [Navigating](#navigating)
@@ -10,7 +10,7 @@
 
 
 
-#Installing
+# Installing
 ## via Chrome Web Store
 
 [![install](images/install.png)](https://chrome.google.com/webstore/detail/dewey-bookmarks/aahpfefkmihhdabllidnlipghcjgpkdm)
@@ -18,16 +18,16 @@
 You can also add Dewey to Chrome directly from our website, [deweyapp.io](http:/deweyapp.io).
 
 
-#Launching
+# Launching
 
 There are several ways to open Dewey.
 
-##1. Dewey Launcher
+## 1. Dewey Launcher
 We highly recommend [Dewey Launcher](https://chrome.google.com/webstore/detail/dewey-launcher/fnfpnjjgpfifiilkencadlekjebpmbph), a small companion extension that puts a Dewey Icon in your browser next to the omnibox (i.e. the search bar) to quickly launch Dewey.
 
 ![image](images/dewey-launcher.png)
 
-##Dewey Launcher with Keyboard Shortcut
+## Dewey Launcher with Keyboard Shortcut
 With Dewey Launcher installed, you can now create a keyboard shortcut to launch Dewey.
 
 **Step 1.** Go to your extensions page via Windows > Extensions, or click on the 3-bar icon in the top right to Tools > Extensions.  
@@ -42,14 +42,14 @@ With Dewey Launcher installed, you can now create a keyboard shortcut to launch 
 
 
 
-##2.  Put Dewey in your Bookmarks Bar
+## 2.  Put Dewey in your Bookmarks Bar
 Make sure your [Bookmarks Bar](https://support.google.com/chrome/answer/95745?hl=en0) is visible. With Dewey open in tab, drag the little document icon in the Search Bar onto the Bookmarks Bar.
 
 ![image](images/omnibox-icon.png)
 
 ![image](images/bookmarks-bar.png)
 
-##3.  Go to your Apps Page
+## 3.  Go to your Apps Page
 You can simply enter `chrome://apps` in the search box and hit enter.
 
 **OR:**
@@ -67,7 +67,7 @@ Clicking this will take you too Chrome's App page which shows you all your apps,
 ![image](images/apps-page.png)
 
 
-#Navigating
+# Navigating
 Dewey organizes your bookmarks into a grid that continues to load as you scroll down. The layout is also fully responsive, so it still works well even if you need to use a narrow browser window.
 
 - Use the Left/Right/Tab keyboard keys to navigate through the grid of bookmarks.
@@ -75,7 +75,7 @@ Dewey organizes your bookmarks into a grid that continues to load as you scroll 
 
 ![image](images/grid.jpg)
 
-#Searching and Sorting
+# Searching and Sorting
 There are several ways to search your bookmarks with Dewey:
 
 - A standard search returns anything with that word in the Tag, Title or URL.
@@ -89,7 +89,7 @@ There are several ways to search your bookmarks with Dewey:
 
 
 
-#Editing
+# Editing
 - Hovering over a bookmark reveals an Edit icon.
 - Clicking the Edit icon opens the edit window.
 - Within the edit window you can edit the Title, URL and custom tags.
@@ -98,18 +98,18 @@ There are several ways to search your bookmarks with Dewey:
 ![image](images/editing.jpg)
 
 
-#Tagging
+# Tagging
 
 - Dewey treats folders in your Chrome Bookmark Manager as tags. To edit those you'll need to go to your Bookmark Manager. (Mac – Opt+Cmd+B) (Windows – Ctrl+Shift+B)
 
 
-#Options
+# Options
 There are two options for Dewey.
 
 ![image](images/options.png)
 
-####1. Hide Top-level Folders
+#### 1. Hide Top-level Folders
 If you’d like Dewey to ignore Chrome’s top-level folders (i.e., Bookmarks Bar, Other Bookmarks and Mobile Bookmarks) click the Settings icon in the top right corner and check the “Hide top-level folders” box.
 
-####2. Show Thumbnails
+#### 2. Show Thumbnails
 If you want Dewey to generate thumbnails for your bookmarks, enable or disable the feature here. If you decide not to show thumbnails, the color of your bookmark will be created from the colors within the link's favicon.

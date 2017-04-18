@@ -25,13 +25,13 @@ Help us to switch to more [powerful server](https://www.digitalocean.com/pricing
 
 ## Creators
 
-###Denis Gladkikh - Development
+### Denis Gladkikh - Development
 
 - [https://www.outcoldman.com](https://www.outcoldman.com)
 - [https://twitter.com/outcoldman](https://twitter.com/outcoldman)
 - [https://github.com/outcoldman](https://github.com/outcoldman)
 
-###Jamie Wilson - Design
+### Jamie Wilson - Design
 
 - [Portfolio - jamiewilson.io](http://jamiewilson.io)
 - [Twitter - @jmwlsn](https://twitter.com/jmwsln)
@@ -67,7 +67,7 @@ There are several ways to search your bookmarks with Dewey:
 
 There is also an option for Dewey to ignore Chrome Bookmarks top-level folders. Dewey will treat these folders as tags, but since Chrome's default is to put all bookmarks saved from your browser into "Other Bookmarks", we thought you might like Dewey to ignore those altogether.
 
-####[More on how to use Dewey](docs/how-to-use-dewey.md) →
+#### [More on how to use Dewey](docs/how-to-use-dewey.md) →
 
 
 ## Install on the Chrome Web Store
@@ -84,13 +84,13 @@ It would be helpful if we could occasionally email you questions about Dewey. If
 [![subscribe](docs/images/subscribe.png)](http://eepurl.com/OeXtX)
 
 
-##Icons
+## Icons
 All icons used in this application are released to the public with No Copyright (CC0 1.0 Universal (CC0 1.0) Public Domain Dedication). 
 
 [![icons](docs/images/icons.png)](http://lyrv.lt/2mF0KiGLQs)
 
 Feel free to use these icons for whatever you want. But if you'd like to help us out, any attribution and/or reference to Dewey would be greatly appreciated.
-###[Download](http://lyrv.lt/Fhno6AJugp) - one Adobe Illustrator file with all icons
+### [Download](http://lyrv.lt/Fhno6AJugp) - one Adobe Illustrator file with all icons
 
 ## Built with…
 To build this application we used following Open Source libraries and resources:
