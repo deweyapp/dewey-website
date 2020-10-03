@@ -1,4 +1,4 @@
-# Dewey. Better Chrome Bookmarks.
+# Dewey. Better & Faster Chrome Bookmarks.
 
 ### Dewey is a [Chrome app](https://chrome.google.com/webstore/detail/dewey-bookmarks/aahpfefkmihhdabllidnlipghcjgpkdm) for tagging, searching and sorting your Chrome bookmarks.
 
