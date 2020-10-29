@@ -44,7 +44,7 @@ Help us to switch to more [powerful server](https://www.digitalocean.com/pricing
 
 ![screenshot](webstore/screenshot-1.jpg)
 
-Dewey organizes your bookmarks into a grid that continues to load as you scroll down. The layout is also fully responsive, so it still works well even if you need to use a narrow browser window.
+Dewey organizes your bookmarks into a grid that continues to load as you scroll down. The layout is also fully responsive, so it still works well even if you need to use a narrowed browser window.
 
 ![screenshot](webstore/screenshot-2.jpg)
 
@@ -52,7 +52,7 @@ You can use the arrow or tab keys to navigate through your bookmarks. Hit enter 
 
 ![screenshot](webstore/screenshot-3.jpg)
 
-Clicking on the Title of a bookmark will bring up this edit window where you can edit the title, url and add custom tags. You can also delete a bookmark from Chrome.
+Clicking on the title of a bookmark will bring up this edit window where you can edit the title, url and add custom tags. You can also delete a bookmark from Chrome.
 
 ![screenshot](webstore/screenshot-4.jpg)
 
@@ -79,7 +79,7 @@ There is also an option for Dewey to ignore Chrome Bookmarks top-level folders. 
 
 **Please [submit issues, bugs, improvements, feature requests, etc.](https://github.com/deweyapp/deweyapp/issues) on our issues page.** Or [fork Dewey](https://github.com/deweyapp/deweyapp/fork) and create your own features. Send us pull requests!
 
-It would be helpful if we could occasionally email you questions about Dewey. If you're interested, please subscribe to our mailing list.
+It would be helpful if we could occasionally email you questions about Dewey. If you're interested then please subscribe to our mailing list.
 
 [![subscribe](docs/images/subscribe.png)](http://eepurl.com/OeXtX)
 
